@@ -1,0 +1,8 @@
+{
+  "name": "eecs-3421-study-lab",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": { "build": "node scripts/build.mjs", "check": "node --check src/app.js && node --check src/content.js", "test": "node --test tests/*.test.mjs" },
+  "dependencies": { "sql.js": "1.16.0" }
+}
