@@ -14,10 +14,11 @@ onmessage = async ({data}) => {
     const statements=db.iterateStatements(data.sql);
     try {
       for(const stmt of statements){
+        const beforeChanges=db.exec('SELECT total_changes()')[0].values[0][0];
         const columns=stmt.getColumnNames();
         const rows=[];let truncated=false;
         while(stmt.step()) { if(rows.length>=200){truncated=true;break;}rows.push(stmt.get()); }
-        results.push({columns,rows,truncated,changed:columns.length?0:db.getRowsModified()});
+        results.push({columns,rows,truncated,changed:columns.length||db.exec('SELECT total_changes()')[0].values[0][0]===beforeChanges?0:db.getRowsModified()});
       }
     } finally { statements.return(); }
     postMessage({type:'result',results,elapsed:performance.now()-started});
